@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .challenge-container {
+            background-color: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.08);
+            width: 100%;
+        }
+        
+        .challenge-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        
+        .challenge-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin: 0;
+        }
+        
+        .challenge-difficulty {
+            
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .difficulty-beginner {
+            background-color: #e8f5e9;
+            color: #2E7D32;
+        }
+        
+        .difficulty-intermediate {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .difficulty-advanced {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .challenge-details {
+            display: flex;
+            margin-top: 15px;
+        }
+        
+        .challenge-info {
+            flex: 2;
+            color: #37474F;
+            line-height: 1.6;
+            font-size: 15px;
+        }
+        
+        .challenge-status {
+            flex: 1;
+            text-align: center;
+            border-left: 1px solid #e0e0e0;
+            padding-left: 20px;
+        }
+        
+        .challenge-goal {
+            margin-bottom: 10px;
+        }
+        
+        .challenge-dates {
+            color: #718096;
+            margin-bottom: 10px;
+        }
+        
+        .challenge-rules {
+            margin-bottom: 15px;
+        }
+        
+        .challenge-status-tag {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .status-active {
+            background-color: #e8f5e9;
+            color: #2E7D32;
+        }
+        
+        .status-upcoming {
+            background-color: #e3f2fd;
+            color: #0d47a1;
+        }
+        
+        .status-closed {
+            background-color: #f5f5f5;
+            color: #616161;
+        }
+        
+        .join-button {
+            padding: 10px 25px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        
+        .join-button:hover {
+            background-color: #388E3C;
+        }
+        
+        .progress-container {
+            margin-top: 12px;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: #f0f4f8;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 5px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: #4CAF50;
+            border-radius: 5px;
+        }
+        
+        .progress-text {
+            font-size: 13px;
+            color: #718096;
+        }
+        
+        .points-display {
+            background-color: #e8f5e9;
+            color: #2E7D32;
+            padding: 8px 12px;
+            border-radius: 30px;
+            display: inline-block;
+            margin-top: 15px;
+            font-weight: 600;
+        }
+        .badge-container {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            justify-content: flex-end;
+        }
+        .join-button-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+    </style>
+</head>
+<body>
+    <div class="challenge-container">
+        <div class="challenge-header">
+            <h2 class="challenge-title">{{CHALLENGE_TITLE}}</h2>
+            
+        </div>
+        
+        <div class="challenge-details">
+            <div class="challenge-info">
+                <div class="challenge-goal">🎯 <strong>Goal:</strong> {{GOAL_VALUE}} {{GOAL_TYPE}}</div>
+                <div class="challenge-dates">📅 <strong>Dates:</strong> {{START_DATE}} to {{END_DATE}}</div>
+                <div class="challenge-rules">📋 <strong>Rules:</strong> {{RULES}}</div>
+                
+                
+            </div>
+            
+            <div class="challenge-status">
+                <div class="badge-container">
+                    <span class="challenge-difficulty difficulty-{{DIFFICULTY_CLASS}}">{{DIFFICULTY}}</span>
+                    <span class="challenge-status-tag status-{{STATUS_CLASS}}">{{STATUS}}</span>
+                </div>
+                
+
+                {{JOIN_BUTTON_HTML}}
+
+               
+                
+             
+                <div class="points-display">
+                    🌟 {{POINTS}} Points
+                </div>
+           
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set progress bar width using JavaScript
+            var progressFill = document.getElementById('progressFill-{{CHALLENGE_ID}}');
+            if (progressFill) {
+                progressFill.style.width = '{{PROGRESS_PERCENTAGE}}%';
+            }
+        });
+   
+    
+    function postJoinChallenge(challengeId) {
+        // Optional: disable button for feedback
+        const btn = document.querySelector(`.join-button`);
+        if (btn) {
+            btn.disabled = true;
+            btn.innerText = "Joining...";
+        }
+        const data = { type: "join_challenge", challenge_id: challengeId };
+        window.parent.postMessage(data, "*");
+        console.log("joining please")
+    }
+
+    </script>
+</body>
+</html>

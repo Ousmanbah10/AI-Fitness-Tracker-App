@@ -1,0 +1,261 @@
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+        background-color: #f0f4f8;
+        padding: 20px;
+        max-width: 2500px;
+        margin: 0 auto;
+    }
+
+    section {
+        margin-bottom: 20px;
+        width: 100%;
+    }
+
+    .header {
+        font-size: 20px;
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .genaicontainer {
+        background-color: #e8f5e9;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+
+    .genaiheading {
+        font-size: 18px;
+        font-weight: 700;
+        color: #2E7D32;
+        margin-bottom: 15px;
+    }
+
+    .genaibox {
+        color: #37474F;
+        line-height: 1.6;
+        font-size: 15px;
+    }
+
+    .postworkout {
+        background-color: white;
+        border-radius: 12px;
+        padding: 15px;
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.08);
+    }
+
+    .postlogo {
+        width: 45px;
+        height: 45px;
+        background-color: #E8F5E9;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #2E7D32;
+        font-weight: 700;
+        margin-right: 15px;
+        font-size: 18px;
+        flex-shrink: 0;
+    }
+
+    .bar {
+        flex: 1;
+    }
+
+    .shareworkout {
+        width: 100%;
+        padding: 12px 18px;
+        border: 1px solid #e0e0e0;
+        border-radius: 30px;
+        outline: none;
+        font-size: 15px;
+    }
+
+    .postbtn {
+        margin-left: 15px;
+    }
+
+    .post {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 30px;
+        padding: 10px 25px;
+        font-size: 15px;
+        cursor: pointer;
+        font-weight: 600;
+    }
+
+    .community-heading {
+        font-size: 18px;
+        font-weight: 700;
+        color: #37474F;
+        margin-bottom: 20px;
+    }
+
+    .comm-feed {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .friends {
+        background-color: white;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.08);
+    }
+
+    .name {
+        font-weight: 600;
+        color: #2c3e50;
+        display: inline-block;
+        margin-right: 10px;
+        font-size: 16px;
+    }
+
+    .time {
+        color: #718096;
+        font-size: 13px;
+        display: inline-block;
+    }
+
+    .friendsummary {
+        margin-top: 12px;
+        line-height: 1.6;
+        font-size: 15px;
+        color: #37474F;
+    }
+    .friendsimage {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-top: 15px;
+}
+</style>
+
+<!-- HTML -->
+<section>
+    <div class="header">Welcome {{USERNAME}} to the E3 Community</div>
+    <div class="genaicontainer">
+        <div class="genaiheading">GenAI Advice</div>
+        <article class="genaibox">
+            
+            {{GENAIADVICECONTENT}}
+            <h5>PICTURE OF THE WEEK</5>
+            <img src="{{GENAIADVICEIMAGE}}" alt="Advice Image" style="max-width: 100%; margin-top: 10px; border-radius: 6px;">
+        </article>
+    </div>
+    
+    <div class="postworkout">
+        <div class="postlogo">{{user_initial}}</div>
+        <div class="bar"> 
+            <h2 class="shareworkout">Share your workout or achievement</h2>
+        </div>
+        <div class="postbtn">
+            <button class="post">POST</button>
+        </div>
+    </div>
+</section>
+    
+<section>
+    <div class="community-heading">
+        Recent Posts from Friends
+    </div>
+    
+    <div class="comm-feed" id="friendsContainer">
+        <!-- Posts will be added here -->
+    </div>
+</section>
+
+<!-- JAVASCRIPT -->
+<script>
+// Define a global None variable to handle Python None values
+var None = null;
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Get valid posts only
+    const validPosts = [];
+    
+    // Try to add each post if it exists and is valid
+    try {
+        const posts = [
+            {{FRIENDSPOSTS0}},
+            {{FRIENDSPOSTS1}},
+            {{FRIENDSPOSTS2}},
+            {{FRIENDSPOSTS3}},
+            {{FRIENDSPOSTS4}},
+            {{FRIENDSPOSTS5}},
+            {{FRIENDSPOSTS6}},
+            {{FRIENDSPOSTS7}},
+            {{FRIENDSPOSTS8}},
+            {{FRIENDSPOSTS9}}
+        ];
+        
+        // Filter out null, undefined, and non-object posts
+        for (let i = 0; i < posts.length; i++) {
+            const post = posts[i];
+            if (post && typeof post === 'object' && post.user_id) {
+                validPosts.push(post);
+            }
+        }
+    } catch (e) {
+        console.error("Error processing posts:", e);
+    }
+    
+    const friendsContainer = document.getElementById('friendsContainer');
+    
+    // Show a default message if no posts could be displayed
+    if (validPosts.length === 0) {
+        friendsContainer.innerHTML = `
+            <article class="friends">
+                <div class="friendsummary">No content to display yet. Start sharing your fitness journey!</div>
+            </article>
+        `;
+    } else {
+        // Create and append each post
+        validPosts.forEach(post => {
+            try {
+                // Create post element
+                const postElement = document.createElement('article');
+                postElement.className = 'friends';
+                
+                // Safely access properties with fallbacks
+                const userId = post.user_id || '';
+                const initial = userId.charAt(0).toUpperCase();
+                const timeAgo = post.timestamp || '';
+                const content = post.content === None ? 'Had a great workout today!' : post.content;
+                const image = post.image || 'Image loading';
+                
+                postElement.innerHTML = `
+                    <div class="postlogo">${initial}</div>
+                    <div class="name">${userId}</div>
+                    <div class="time">${timeAgo}</div>
+                    <div class="friendsummary">${content}</div>
+                    <img src="${image}" alt="Post Image" class="friendsimage">
+                  
+                `;
+                
+                friendsContainer.appendChild(postElement);
+            } catch (e) {
+                console.error('Error creating post element:', e);
+            }
+        });
+    }
+});
+</script>

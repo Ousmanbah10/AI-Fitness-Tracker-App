@@ -1,0 +1,234 @@
+<!-- CSS -->
+<style>
+    /* Main container */
+    .custom-component-container {
+      max-width: 800px;
+      background: white;
+      border: 1px solid #e0e0e0;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      margin: 20px auto;
+      font-family: "Helvetica", "Arial", sans-serif;
+      color: #333;
+      overflow: hidden;
+    }
+  
+    /* Header styling */
+    h2 {
+      font-size: 1.6rem;
+      font-weight: bold;
+      color: white;
+      background: #3a7d44;
+      text-align: center;
+      padding: 18px 15px;
+      margin: 0;
+    }
+  
+    /* Content container */
+    .dashboard-content {
+      padding: 15px;
+    }
+  
+    /* Motivation banner */
+    .motivation-banner {
+      background: #e8f5e9;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 20px;
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #2e7d32;
+      text-align: left;
+    }
+  
+    /* Stats grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+  
+    /* Stat cards */
+    .stat-card {
+      background: #f5f5f5;
+      border-radius: 10px;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+    }
+  
+    /* Icon circles */
+    .stat-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      margin-right: 20px;
+    }
+  
+    .distance-icon {
+      background: #e8f5e9;
+      border: 2px solid #3a7d44;
+    }
+  
+    .steps-icon {
+      background: #e3f2fd;
+      border: 2px solid #1976d2;
+    }
+  
+    .calories-icon {
+      background: #ffebee;
+      border: 2px solid #e53935;
+    }
+  
+    .duration-icon {
+      background: #fff3e0;
+      border: 2px solid #ff9800;
+    }
+  
+    /* Stat text styling */
+    .stat-details {
+      flex: 1;
+    }
+  
+    .stat-label {
+      font-size: 1rem;
+      color: #666;
+      margin: 0 0 5px;
+    }
+  
+    .stat-value {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #333;
+      margin: 0;
+    }
+  
+    /* Animation */
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.8); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  
+    .custom-component-container {
+      animation: popIn 0.8s ease forwards;
+    }
+  
+    /* For smaller screens */
+    @media (max-width: 600px) {
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    /* Hide the original paragraph content */
+    .original-content {
+      display: none;
+    }
+  </style>
+  
+  <!-- HTML with the original structure preserved -->
+  <div class="custom-component-container">
+    <h2 class="animated-text">🔥 Total Activity Summary 🔥</h2>
+    
+    <div class="dashboard-content">
+      <!-- Original content (hidden but preserved) -->
+      <p class="original-content">{{crafted_message}}</p>
+      
+      <!-- Dynamically populated content -->
+      <div class="motivation-banner" id="motivation-message"></div>
+      
+      <div class="stats-grid">
+        <!-- Distance Card -->
+        <div class="stat-card">
+          <div class="stat-icon distance-icon">📏</div>
+          <div class="stat-details">
+            <p class="stat-label">Total Distance</p>
+            <p class="stat-value" id="total-distance">Loading...</p>
+          </div>
+        </div>
+        
+        <!-- Steps Card -->
+        <div class="stat-card">
+          <div class="stat-icon steps-icon">👟</div>
+          <div class="stat-details">
+            <p class="stat-label">Total Steps</p>
+            <p class="stat-value" id="total-steps">Loading...</p>
+          </div>
+        </div>
+        
+        <!-- Calories Card -->
+        <div class="stat-card">
+          <div class="stat-icon calories-icon">🔥</div>
+          <div class="stat-details">
+            <p class="stat-label">Total Calories</p>
+            <p class="stat-value" id="total-calories">Loading...</p>
+          </div>
+        </div>
+        
+        <!-- Duration Card -->
+        <div class="stat-card">
+          <div class="stat-icon duration-icon">⏱️</div>
+          <div class="stat-details">
+            <p class="stat-label">Total Duration</p>
+            <p class="stat-value" id="total-duration">Loading...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- JavaScript to process the crafted message and populate the dashboard -->
+  <script>
+    (function() {
+      const container = document.querySelector('.custom-component-container');
+      if (container) {
+        container.style.animation = "popIn 1s ease forwards";
+      }
+      
+      // Get the original crafted message
+      const originalContent = document.querySelector('.original-content').innerHTML;
+      
+      // Extract the motivational message (first part before any data)
+      let motivationMessage = "";
+      if (originalContent.includes("Great job!")) {
+        motivationMessage = originalContent.split("<br>")[0];
+        document.getElementById('motivation-message').innerHTML = motivationMessage;
+      }
+      
+      // Extract the distance
+      if (originalContent.includes("Total Workout Distances")) {
+        const distanceMatch = originalContent.match(/Total Workout Distances\s*:\s*([\d\.]+)\s*km/i);
+        if (distanceMatch && distanceMatch[1]) {
+          document.getElementById('total-distance').innerHTML = distanceMatch[1] + " km";
+        }
+      }
+      
+      // Extract the steps
+      if (originalContent.includes("Total Workout Steps")) {
+        const stepsMatch = originalContent.match(/Total Workout Steps\s*:\s*([\d,\.]+)\s*steps/i);
+        if (stepsMatch && stepsMatch[1]) {
+          document.getElementById('total-steps').innerHTML = stepsMatch[1] + " steps";
+        }
+      }
+      
+      // Extract the calories
+      if (originalContent.includes("Total Calories Burnt")) {
+        const caloriesMatch = originalContent.match(/Total Calories Burnt\s*:\s*([\d\.]+)\s*calories/i);
+        if (caloriesMatch && caloriesMatch[1]) {
+          document.getElementById('total-calories').innerHTML = caloriesMatch[1] + " calories";
+        }
+      }
+      
+      // Extract the duration
+      if (originalContent.includes("Total workout Durations")) {
+        const durationMatch = originalContent.match(/Total workout Durations\s*:\s*([\d\.]+)\s*minutes/i);
+        if (durationMatch && durationMatch[1]) {
+          document.getElementById('total-duration').innerHTML = durationMatch[1] + " minutes";
+        }
+      }
+    })();
+  </script>
