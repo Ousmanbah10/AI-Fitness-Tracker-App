@@ -1,4 +1,4 @@
-A personalized fitness tracking web app built with Streamlit, Python, Google BigQuery, Auth0, and Gemini. This platform allows users to join fitness challenges, log their progress, and receive AI-powered insights to stay motivated and consistent.
+A personalized fitness tracking web app built with Streamlit, Python, Google BigQuery, Auth0, and Gemini. This platform allows users to join fitness challenges, log their progress, and receive AI-powered insights to stay motivated and consistent.A personalized fitness tracking web app built with Streamlit, Python, Google BigQuery, Auth0, and Gemini. Designed to help users join fitness challenges, track progress, and receive AI-powered insights to stay motivated and consistent. This project was developed as part of the Google Tech Exchange 2025 program, with a strong focus on cloud development, databases, and real-world AI integration.
 
 🚀 Features
 
